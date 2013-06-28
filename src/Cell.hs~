@@ -58,9 +58,9 @@ stepWorld (World pos set) = World pos set'
     set' = S.fold evolvePoint S.empty set
     evolvePoint pos accSet = accSet `S.union` S.fromList newLives
       where
-        newLives = filter evolveCondition $ pos : generateNeighbours pos
-        evolveCondition (x, y) = evolve (S.member (x, y) set) $ liveNeighbours (x, y)
-        liveNeighbours pos = length . filter (flip S.member set) $ generateNeighbours pos
+        newLives = filter evolveCondition $ generateNeighbours pos
+        evolveCondition (x, y) = evolve (S.member pos set) liveNeighbours
+        liveNeighbours = length . filter (flip S.member set) $ generateNeighbours pos
         evolve :: Cell -> Int -> Cell --Basic behavior rules of Conway's Game of Life
         evolve _ 3 = True
         evolve True 2 = True
